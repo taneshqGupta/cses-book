@@ -20,9 +20,38 @@ struct custom_hash {
     }
 };
 
+ll n, x;
+ll range_sum(const vector<ll> &pref, ll left, ll right) {
+    if (left >= n || right >= n) return 0;
+    if (left > right) return 0;
+    return pref[right + 1] - pref[left];
+}
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
+    cin >> n >> x;
+    vector<ll> a(n);
+    for (ll &c : a) cin >> c;
+
+    vector<ll> pref(n + 1, 0);
+    for (ll i = 1; i <= n; ++i) pref[i] = pref[i - 1] + a[i - 1];
+
+    ll left = 0, right = 0;
+    ll ans = 0;
+    while (left < n && right < n) {
+        if (range_sum(pref, left, right) == x) {
+            ans++;
+        }
+        while ((right < (n - 1)) && range_sum(pref, left, right) < x) {
+            right++;
+            if (range_sum(pref, left, right) == x) {
+                ans++;
+            }
+        }
+        left++;
+    }
+    cout << ans << nl;
 }

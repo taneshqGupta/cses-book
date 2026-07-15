@@ -60,7 +60,7 @@ int main() {
     // freopen("output.txt", "w", stdout);
     int n, m;
     cin >> m >> n;
-    if (n < m) swap(n, m); // keep m small
+    if (n < m) swap(n, m);
     if ((n * m) % 2 != 0) {
         cout << 0 << '\n';
         return 0;
@@ -74,11 +74,11 @@ int main() {
     }
 
     // DP
-    vector<long long> dp(total_masks, 0);
+    vector<ll> dp(total_masks, 0);
     dp[0] = 1;
 
     for (int i = 0; i < n; ++i) {
-        vector<long long> ndp(total_masks, 0);
+        vector<ll> ndp(total_masks, 0);
         for (int mask = 0; mask < total_masks; ++mask) {
             if (dp[mask] == 0) continue;
             for (int nm : trans[mask]) {

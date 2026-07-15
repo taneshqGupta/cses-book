@@ -20,9 +20,33 @@ struct custom_hash {
     }
 };
 
+ll n, x;
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
+    cin >> n >> x;
+    vector<ll> a(n);
+    for (ll &c : a) cin >> c;
+
+    vector<ll> pref(n + 1, 0);
+    for (ll i = 1; i <= n; ++i) pref[i] = pref[i - 1] + a[i - 1];
+
+    gp_hash_table<ll, ll, custom_hash> f;
+    f[0] = 1;
+
+    ll count = 0;
+
+    for (ll i = 0; i < n; ++i) {
+        ll curr = pref[i + 1];
+        ll target = curr - x;
+        if (f.find(target) != f.end()) {
+            count += f[target];
+        }
+        f[pref[i + 1]]++;
+    }
+
+    cout << count << nl;
 }
