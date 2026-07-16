@@ -25,36 +25,23 @@ int main() {
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    // The Key Observation is: The Number of Distinct Values is Monotonic.
-    ll n, k;
-    cin >> n >> k;
+    ll n;
+    cin >> n;
     vector<ll> a(n);
     for (ll &c : a) cin >> c;
 
-    ll num_distinct = 1;
-    ll count = 1;
     ll left = 0;
-    gp_hash_table<ll, ll, custom_hash> f;
+    cc_hash_table<ll, ll, custom_hash> f;
+    ll count = 1;
     f[a[0]] = 1;
 
     for (ll i = 1; i < n; ++i) {
-        if (f.find(a[i]) != f.end()) {
-            f[a[i]]++;
-            count += i - left + 1;
-            continue;
-        }
-        num_distinct += 1;
-        f[a[i]]++;
-        while (num_distinct > k) {
-            f[a[left]]--;
-            if (f[a[left]] == 0) {
-                f.erase(a[left]);
-                num_distinct--;
-            }
+        while (f.find(a[i]) != f.end()) {
+            f.erase(a[left]);
             left++;
         }
         count += i - left + 1;
+        f[a[i]]++;
     }
 
     cout << count << nl;

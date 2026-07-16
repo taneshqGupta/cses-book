@@ -19,42 +19,37 @@ struct custom_hash {
         return splitmix64(x + FIXED_RANDOM);
     }
 };
+inline ll mod(ll a, ll b) {
+    ll r = a % b;
+    if (r < 0) {
+        r += b;
+    }
+    return r;
+}
 
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    // The Key Observation is: The Number of Distinct Values is Monotonic.
-    ll n, k;
-    cin >> n >> k;
+    ll n;
+    cin >> n;
     vector<ll> a(n);
     for (ll &c : a) cin >> c;
 
-    ll num_distinct = 1;
-    ll count = 1;
-    ll left = 0;
-    gp_hash_table<ll, ll, custom_hash> f;
-    f[a[0]] = 1;
+    ll count = 0;
 
-    for (ll i = 1; i < n; ++i) {
-        if (f.find(a[i]) != f.end()) {
-            f[a[i]]++;
-            count += i - left + 1;
-            continue;
+    gp_hash_table<ll, ll, custom_hash> f;
+    f[0] = 1;
+
+    ll sum = 0;
+    for (ll i = 0; i < n; i++) {
+        sum += a[i];
+        ll rem = mod(sum, n);
+        if (f.find(rem) != f.end()) {
+            count += f[rem];
         }
-        num_distinct += 1;
-        f[a[i]]++;
-        while (num_distinct > k) {
-            f[a[left]]--;
-            if (f[a[left]] == 0) {
-                f.erase(a[left]);
-                num_distinct--;
-            }
-            left++;
-        }
-        count += i - left + 1;
+        f[rem]++;
     }
 
     cout << count << nl;
