@@ -25,4 +25,36 @@ int main() {
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
+    ll n;
+    cin >> n;
+
+    vector<ll> dp(n + 1, 1e18);
+    dp[0] = 0;
+
+    // vector<ll> last(n + 1);
+    vector<ll> digits;
+    for (ll i = 1; i <= n; ++i) {
+        digits.clear();
+        ll nn = i;
+        while (nn > 0) {
+            digits.push_back(nn % 10);
+            nn /= 10;
+        }
+        ll x = digits.size();
+
+        for (ll c = 0; c < x; ++c) {
+            if (i >= digits[c]) {
+                if (dp[i - digits[c]] + 1 < dp[i]) {
+                    dp[i] = dp[i - digits[c]] + 1;
+                    // last[i] = i - digits[c];
+                }
+            }
+        }
+    }
+
+    cout << dp[n] << nl;
+    // while (n > 0) {
+    //     cout << last[n] << ' ';
+    //     n = last[n];
+    // }
 }
