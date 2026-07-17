@@ -25,33 +25,32 @@ int main() {
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
+
     ll n, k;
     cin >> n >> k;
-    vector<pair<ll, ll>> a(n);
-    for (auto &c : a) cin >> c.second >> c.first;
-    sort(all(a));
-
-    ll ans_count = 0;
-
-    set<pair<ll, ll>> busy_times;
-    for (ll i = 0; i < k; i++) {
-        busy_times.insert({0, i});
-    }
-
-    ll pointer = 0;
-
-    while (pointer < n) {
-        ll min_busy_time = busy_times.begin()->first;
-        if (a[pointer].second >= min_busy_time) {
-            ll guy = busy_times.begin()->second;
-            busy_times.erase(busy_times.begin());
-            busy_times.insert({a[pointer].first, guy});
-            ans_count++;
-            pointer++;
-        } else {
-            pointer++;
+    vector<ll> a(n);
+    ll low = 0, high = 0;
+    for (ll &c : a) {
+        cin >> c;
+        high += c;
+        low = max(low, c);
+    };
+    while (low < high) {
+        ll mid = low + (high - low) / 2;
+        bool ys = false;
+        ll subarray_count = 1;
+        ll current_subarray_sum = 0;
+        for (ll i = 0; i < n; i++) {
+            if (current_subarray_sum + a[i] > mid) {
+                subarray_count++;
+                current_subarray_sum = a[i];
+                continue;
+            }
+            current_subarray_sum += a[i];
         }
+        if (subarray_count <= k) high = mid;
+        else low = mid + 1;
     }
 
-    cout << ans_count << nl;
+    cout << low << nl;
 }
