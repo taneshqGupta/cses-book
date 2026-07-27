@@ -25,29 +25,4 @@ int main() {
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-    ll a, b;
-    cin >> a >> b;
-
-    if (a > b) swap(a, b);
-
-    vector<vector<ll>> grid(a + 1, vector<ll>(b + 1, 1e18));
-
-    for (ll i = 1; i <= a; ++i) {
-        grid[i][i] = 0;
-    }
-
-    for (ll i = 1; i <= a; ++i) {
-        for (ll j = 1; j <= b; ++j) {
-            if (i == j) continue;
-
-            for (ll k = 1; k < i; ++k) {
-                grid[i][j] = min(grid[i][j], grid[k][j] + grid[i - k][j] + 1);
-            }
-            for (ll k = 1; k < j; ++k) {
-                grid[i][j] = min(grid[i][j], grid[i][k] + grid[i][j - k] + 1);
-            }
-        }
-    }
-
-    cout << grid[a][b] << nl;
 }
