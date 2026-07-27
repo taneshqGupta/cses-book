@@ -20,34 +20,32 @@ struct custom_hash {
     }
 };
 
+int lcs_two_rows(const string &X, const string &Y) {
+    int m = X.length();
+    int n = Y.length();
+
+    // We only need 2 rows
+    vector<int> prev(n + 1, 0);
+    vector<int> curr(n + 1, 0);
+
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (X[i - 1] == Y[j - 1]) {
+                curr[j] = prev[j - 1] + 1;
+            } else {
+                curr[j] = max(prev[j], curr[j - 1]);
+            }
+        }
+        // Swap rows for next iteration
+        prev.swap(curr);
+    }
+
+    return prev[n]; // prev holds the last computed row
+}
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-    ll a, b;
-    cin >> a >> b;
-
-    if (a > b) swap(a, b);
-
-    vector<vector<ll>> grid(a + 1, vector<ll>(b + 1, 1e18));
-
-    for (ll i = 1; i <= a; ++i) {
-        grid[i][i] = 0;
-    }
-
-    for (ll i = 1; i <= a; ++i) {
-        for (ll j = 1; j <= b; ++j) {
-            if (i == j) continue;
-
-            for (ll k = 1; k < i; ++k) {
-                grid[i][j] = min(grid[i][j], grid[k][j] + grid[i - k][j] + 1);
-            }
-            for (ll k = 1; k < j; ++k) {
-                grid[i][j] = min(grid[i][j], grid[i][k] + grid[i][j - k] + 1);
-            }
-        }
-    }
-
-    cout << grid[a][b] << nl;
 }
