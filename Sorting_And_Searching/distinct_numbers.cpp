@@ -26,29 +26,13 @@ int main() {
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-    ll n, m, k;
-    cin >> n >> m >> k;
-    vector<ll> a(n), b(m);
-    for (ll &c : a) cin >> c;
-    for (ll &c : b) cin >> c;
-
-    sort(all(a));
-    sort(all(b));
-    ll i = 0, j = 0, ans = 0;
-
-    while (i < n && j < m) {
-        if (a[i] + k < b[j]) {
-            ++i;
-            continue;
-        }
-        if (a[i] - k > b[j]) {
-            ++j;
-            continue;
-        }
-        ++ans;
-        ++i;
-        ++j;
+    ll n;
+    cin >> n;
+    set<ll> st;
+    for (ll i = 0; i < n; ++i) {
+        ll num;
+        cin >> num;
+        st.insert(num);
     }
-
-    cout << ans << nl;
+    cout << st.size() << nl;
 }
