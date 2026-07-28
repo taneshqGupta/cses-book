@@ -26,26 +26,34 @@ int main() {
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-    ll n;
-    cin >> n;
-    set<pair<ll, bool>> a;
+    ll n, m;
+    cin >> n >> m;
+    map<ll, ll> t_prices;
     for (ll i = 0; i < n; ++i) {
-        ll f, e;
-        cin >> f >> e;
-        a.insert({f, true});
-        a.insert({e, false});
+        ll num;
+        cin >> num;
+        t_prices[num]++;
     }
+    vector<ll> m_price(m);
+    for (ll &c : m_price) cin >> c;
 
-    ll count = 0, max_count = 0;
+    vector<ll> ans(m, -1);
 
-    for (auto [t, g] : a) {
-        if (g) {
-            count++;
-            max_count = max(count, max_count);
-        } else {
-            count--;
+    for (ll i = 0; i < m; ++i) {
+        auto it = t_prices.upper_bound(m_price[i]);
+        if (it == t_prices.begin()) {
+            continue;
         }
+        it--;
+        auto ita = *it;
+        t_prices[ita.first]--;
+        if (t_prices[ita.first] == 0) {
+            t_prices.erase(ita.first);
+        }
+        ans[i] = ita.first;
     }
 
-    cout << max_count << nl;
+    for (ll &c : ans) {
+        cout << c << nl;
+    }
 }
