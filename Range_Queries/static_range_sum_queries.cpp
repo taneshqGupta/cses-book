@@ -26,4 +26,23 @@ int main() {
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
+    ll n, q;
+    cin >> n >> q;
+    vector<ll> a(n);
+    for (ll &c : a) cin >> c;
+
+    vector<ll> pfa(n + 1, 0);
+    pfa[1] = a[0];
+
+    for (ll i = 1; i < n; ++i) {
+        pfa[i + 1] = pfa[i] + a[i];
+    }
+
+    while (q--) {
+        ll a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        cout << pfa[b + 1] - pfa[a] << nl;
+    }
 }
