@@ -19,10 +19,53 @@ struct custom_hash {
         return splitmix64(x + FIXED_RANDOM);
     }
 };
+const ll MOD = 1e9 + 7;
+
+const ll N = 1 << 18;
+ll trex[2 * N];
+
+void update(ll i, ll x) {
+    i += N;
+    trex[i] = x;
+    while (i > 1) {
+        i /= 2;
+        trex[i] = min(trex[i * 2], trex[i * 2 + 1]);
+    }
+}
+
+ll query(ll l, ll r) {
+    ll res = 1e9;
+    l += N;
+    r += N;
+    while (l <= r) {
+        if (l % 2 == 1) res = min(res, trex[l++]);
+        if (l % 2 == 0) res = min(res, trex[r--]);
+        l /= 2;
+        r /= 2;
+    }
+    return res;
+}
 
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
+
+    ll n, q;
+    cin >> n >> q;
+
+    for (ll i = 0; i < n; ++i) {
+        ll a;
+        cin >> a;
+        update(i, a);
+    }
+
+    while (q--) {
+        ll a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        cout << query(a, b) << nl;
+    }
 }
