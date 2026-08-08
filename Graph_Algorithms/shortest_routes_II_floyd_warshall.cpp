@@ -27,4 +27,42 @@ int main() {
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
+
+    ll n, m, q;
+    cin >> n >> m >> q;
+
+    vector<vector<ll>> grid(n, vector<ll>(n, INF));
+
+    for (ll i = 0; i < n; ++i) {
+        grid[i][i] = 0;
+    }
+
+    for (ll i = 0; i < m; ++i) {
+        ll a, b, c;
+        cin >> a >> b >> c;
+
+        a--;
+        b--;
+
+        grid[a][b] = min(grid[a][b], c);
+        grid[b][a] = min(grid[b][a], c);
+    }
+
+    for (ll k = 0; k < n; ++k) {
+        for (ll i = 0; i < n; ++i) {
+            for (ll j = 0; j < n; ++j) {
+                grid[i][j] = min(grid[i][j], grid[i][k] + grid[k][j]);
+            }
+        }
+    }
+
+    while (q--) {
+        ll a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+
+        if (grid[a][b] == INF) cout << "-1\n";
+        else cout << grid[a][b] << nl;
+    }
 }
