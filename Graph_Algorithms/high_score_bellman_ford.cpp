@@ -32,6 +32,9 @@ int main() {
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
 
+    // todo!
+    // look at cses analysis code, it is much more elegant.
+
     ll n, m;
     cin >> n >> m;
 

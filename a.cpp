@@ -20,63 +20,9 @@ struct custom_hash {
     }
 };
 
-const ll INF = 1e18;
-
-struct Edge {
-    ll a, b, cost;
-};
-
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    ll n, m;
-    cin >> n >> m;
-
-    vector<Edge> graph(m);
-
-    for (ll i = 0; i < m; ++i) {
-        ll a, b, cost;
-
-        cin >> a >> b >> cost;
-
-        a--;
-        b--;
-
-        graph[i] = Edge{a, b, -cost};
-    }
-
-    vector<ll> d(n, INF);
-
-    d[0] = 0;
-
-    for (ll i = 0; i < n; ++i) {
-
-        for (const auto &e : graph) {
-
-            if (d[e.a] < INF && d[e.b] > (d[e.a] + e.cost)) {
-
-                d[e.b] = d[e.a] + e.cost;
-            }
-        }
-    }
-
-    for (ll i = 0; i < n; ++i) {
-
-        for (const auto &e : graph) {
-
-            if (d[e.a] < INF) {
-
-                if (d[e.a] == -INF || (d[e.a] + e.cost) < d[e.b]) {
-
-                    d[e.b] = -INF;
-                }
-            }
-        }
-    }
-
-    if (d[n - 1] == -INF) cout << -1 << nl;
-    else cout << -d[n - 1] << nl;
 }
