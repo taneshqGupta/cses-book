@@ -21,6 +21,8 @@ struct custom_hash {
 };
 
 const ll INF = 1e18;
+const ll N = 505;
+ll dist[N][N];
 
 int main() {
     ios::sync_with_stdio(0);
@@ -31,10 +33,12 @@ int main() {
     ll n, m, q;
     cin >> n >> m >> q;
 
-    vector<vector<ll>> grid(n, vector<ll>(n, INF));
-
     for (ll i = 0; i < n; ++i) {
-        grid[i][i] = 0;
+
+        for (ll j = 0; j < n; ++j) {
+
+            dist[i][j] = INF;
+        }
     }
 
     for (ll i = 0; i < m; ++i) {
@@ -44,25 +48,36 @@ int main() {
         a--;
         b--;
 
-        grid[a][b] = min(grid[a][b], c);
-        grid[b][a] = min(grid[b][a], c);
+        dist[b][a] = min(dist[a][b], c);
+        dist[a][b] = dist[b][a];
     }
 
-    for (ll k = 0; k < n; ++k) {
-        for (ll i = 0; i < n; ++i) {
-            for (ll j = 0; j < n; ++j) {
-                grid[i][j] = min(grid[i][j], grid[i][k] + grid[k][j]);
+    for (ll i = 0; i < n; ++i) {
+        dist[i][i] = 0;
+    }
+
+    for (ll i = 0; i < n; ++i) {
+
+        for (ll j = 0; j < n; ++j) {
+
+            for (ll k = 0; k < n; ++k) {
+
+                dist[j][k] = min(dist[j][k], dist[j][i] + dist[i][k]);
+                dist[k][j] = dist[j][k];
             }
         }
     }
 
     while (q--) {
+
         ll a, b;
+
         cin >> a >> b;
+
         a--;
         b--;
 
-        if (grid[a][b] == INF) cout << "-1\n";
-        else cout << grid[a][b] << nl;
+        if (dist[a][b] != INF) cout << dist[a][b] << nl;
+        else cout << "-1\n";
     }
 }
